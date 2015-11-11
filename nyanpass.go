@@ -58,16 +58,19 @@ func (n *Nyanpass) GetNyanpassWithDays(days int) ([]string, error) {
 	now := time.Now()
 	cnt := 0
 	for i := -days; i < 0; i++ {
-		n.Counts[cnt].X = float64(cnt)
 		re, err := regexp.Compile("[0-9]+")
 		if err != nil {
 			return tweets, err
 		}
 		all := re.FindAllString(tweets[cnt], -1)
+		if len(all) != 2 {
+			continue
+		}
 		countF, err := strconv.ParseFloat(all[0], 64)
 		if err != nil {
 			return tweets, err
 		}
+		n.Counts[cnt].X = float64(cnt)
 		n.Counts[cnt].Y = countF
 		n.labels = append(n.labels, now.AddDate(0, 0, i).Format("01/02"))
 		cnt++
