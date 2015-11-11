@@ -1,9 +1,10 @@
-package main
+package nyanpass
 
 import (
 	"encoding/base64"
 	"errors"
 	"github.com/ChimeraCoder/anaconda"
+	"github.com/Rompei/nyanpass-graph2/twitter"
 	"github.com/gonum/plot"
 	"github.com/gonum/plot/plotter"
 	"github.com/gonum/plot/plotutil"
@@ -17,7 +18,7 @@ import (
 // Nyanpass object
 type Nyanpass struct {
 	Counts    plotter.XYs
-	twitter   *Twitter
+	twitter   *twitter.Twitter
 	imagePath string
 	labels    []string
 }

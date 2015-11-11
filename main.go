@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"github.com/Rompei/nyanpass-graph2/nyanpass"
 )
 
 func main() {
-	nyanpass := NewNyanpass()
-	tweets, err := nyanpass.GetNyanpassWithDays(7)
+	n := nyanpass.NewNyanpass()
+	tweets, err := n.GetNyanpassWithDays(7)
 	if err != nil {
 		panic(err)
 	}
@@ -15,12 +16,12 @@ func main() {
 		fmt.Println(tweet)
 	}
 
-	err = nyanpass.CreateImage("nyanpass.png")
+	err = n.CreateImage("nyanpass.png")
 	if err != nil {
 		panic(err)
 	}
 
-	tweet, err := nyanpass.PostGraph("")
+	tweet, err := n.PostGraph("")
 	if err != nil {
 		panic(err)
 	}

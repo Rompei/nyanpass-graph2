@@ -1,4 +1,4 @@
-package main
+package twitter
 
 import (
 	"encoding/base64"
