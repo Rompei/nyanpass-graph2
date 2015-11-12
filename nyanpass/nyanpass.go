@@ -122,11 +122,9 @@ func (n *Nyanpass) PostGraph(text string) (*anaconda.Tweet, error) {
 	data := make([]byte, imageSize)
 	image.Read(data)
 
-	if text == "" {
-		text = n.labels[0] + "~" + n.labels[len(n.labels)-1]
-	}
+	twText := n.labels[0] + "~" + n.labels[len(n.labels)-1] + "のにゃんぱす\n" + text
 
-	tweet, err := n.twitter.PostMediaTweet(text, base64.StdEncoding.EncodeToString(data))
+	tweet, err := n.twitter.PostMediaTweet(twText, base64.StdEncoding.EncodeToString(data))
 	return &tweet, err
 }
 
