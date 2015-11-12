@@ -6,7 +6,7 @@ import (
 
 func TestCreateImage(t *testing.T) {
 	nyanpass := NewNyanpass()
-	tweets, err := nyanpass.GetNyanpassWithDays(7)
+	_, err := nyanpass.GetNyanpassWithDays(7)
 	if err != nil {
 		t.Errorf("Error: %v", err)
 	}
@@ -16,7 +16,7 @@ func TestCreateImage(t *testing.T) {
 		t.Errorf("Error: %v", err)
 	}
 
-	tweets, err = nyanpass.GetNyanpassWithDays(30)
+	_, err = nyanpass.GetNyanpassWithDays(30)
 	if err != nil {
 		t.Errorf("Error: %v", err)
 	}

@@ -11,6 +11,14 @@ type Twitter struct {
 	api *anaconda.TwitterApi
 }
 
+// TwitterInfo onject
+type TwitterInfo struct {
+	ConsumerKey       string
+	ConsumerSecret    string
+	AccessToken       string
+	AccessTokenSecret string
+}
+
 // NewTwitter : constructor of Twitter
 func NewTwitter(info TwitterInfo) *Twitter {
 	anaconda.SetConsumerKey(info.ConsumerKey)

@@ -17,23 +17,15 @@ import (
 
 // Nyanpass object
 type Nyanpass struct {
-	Counts    plotter.XYs
+	Counts    plotter.Values
 	twitter   *twitter.Twitter
 	imagePath string
 	labels    []string
 }
 
-// TwitterInfo onject
-type TwitterInfo struct {
-	ConsumerKey       string
-	ConsumerSecret    string
-	AccessToken       string
-	AccessTokenSecret string
-}
-
 // NewNyanpass is constructor of Nyanpass
 func NewNyanpass() *Nyanpass {
-	info := TwitterInfo{
+	info := twitter.TwitterInfo{
 		ConsumerKey:       os.Getenv("CONSUMER_KEY"),
 		ConsumerSecret:    os.Getenv("CONSUMER_SECRET"),
 		AccessToken:       os.Getenv("ACCESS_TOKEN"),
@@ -41,7 +33,7 @@ func NewNyanpass() *Nyanpass {
 	}
 
 	return &Nyanpass{
-		twitter: NewTwitter(info),
+		twitter: twitter.NewTwitter(info),
 	}
 }
 
@@ -55,7 +47,7 @@ func (n *Nyanpass) GetNyanpassWithDays(days int) ([]string, error) {
 
 	reverseTweets(tweets)
 
-	n.Counts = make(plotter.XYs, days)
+	n.Counts = make(plotter.Values, days)
 	now := time.Now()
 	cnt := 0
 	for i := -days; i < 0; i++ {
@@ -71,8 +63,7 @@ func (n *Nyanpass) GetNyanpassWithDays(days int) ([]string, error) {
 		if err != nil {
 			return tweets, err
 		}
-		n.Counts[cnt].X = float64(cnt)
-		n.Counts[cnt].Y = countF
+		n.Counts[cnt] = countF
 		n.labels = append(n.labels, now.AddDate(0, 0, i).Format("01/02"))
 		cnt++
 	}
@@ -96,10 +87,15 @@ func (n *Nyanpass) CreateImage(fileName string) error {
 	p.Y.Tick.Marker = &CommaTicks{}
 	p.NominalX(n.labels...)
 
-	err = plotutil.AddLinePoints(p, "Nyanpass", n.Counts)
+	bar, err := plotter.NewBarChart(n.Counts, vg.Points(20))
 	if err != nil {
 		return err
 	}
+	bar.LineStyle.Width = vg.Length(0)
+	bar.Color = plotutil.Color(2)
+
+	p.Add(bar)
+
 	if err := p.Save(4*vg.Inch, 4*vg.Inch, fileName); err != nil {
 		return err
 	}

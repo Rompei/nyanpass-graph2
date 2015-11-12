@@ -8,7 +8,10 @@ import (
 
 func TestGetTweets(t *testing.T) {
 	twitter := NewTwitter(prepareTwitterInfo())
-	tweets := twitter.GetTweets(7, os.Getenv("USER_ID"))
+	tweets, err := twitter.GetTweets(7, os.Getenv("USER_ID"))
+	if err != nil {
+		t.Errorf("Error: %v", err)
+	}
 	if tweets == nil || len(tweets) != 7 {
 		t.Errorf("The number of tweets was wrong.")
 	}
