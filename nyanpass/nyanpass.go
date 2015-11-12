@@ -56,7 +56,7 @@ func (n *Nyanpass) GetNyanpassWithDays(days int) ([]string, error) {
 			return tweets, err
 		}
 		all := re.FindAllString(tweets[cnt], -1)
-		if len(all) != 2 {
+		if len(all) != 3 {
 			continue
 		}
 		countF, err := strconv.ParseFloat(all[0], 64)
@@ -81,11 +81,6 @@ func (n *Nyanpass) CreateImage(fileName string) error {
 	if err != nil {
 		return err
 	}
-	p.Title.Text = "Nyanpass Graph"
-	p.X.Label.Text = "Days"
-	p.Y.Label.Text = "Nyanpass count"
-	p.Y.Tick.Marker = &CommaTicks{}
-	p.NominalX(n.labels...)
 
 	bar, err := plotter.NewBarChart(n.Counts, vg.Points(20))
 	if err != nil {
@@ -95,6 +90,11 @@ func (n *Nyanpass) CreateImage(fileName string) error {
 	bar.Color = plotutil.Color(2)
 
 	p.Add(bar)
+	p.Title.Text = "Nyanpass Graph"
+	p.X.Label.Text = "Days"
+	p.Y.Label.Text = "Nyanpass count"
+	p.Y.Tick.Marker = &CommaTicks{}
+	p.NominalX(n.labels...)
 
 	if err := p.Save(4*vg.Inch, 4*vg.Inch, fileName); err != nil {
 		return err
