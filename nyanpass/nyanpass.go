@@ -47,23 +47,23 @@ func (n *Nyanpass) GetNyanpassWithDays(days int) ([]string, error) {
 
 	reverseTweets(tweets)
 
-	n.Counts = make(plotter.Values, days)
 	now := time.Now()
 	cnt := 0
+	re, err := regexp.Compile("[0-9]+")
+	if err != nil {
+		return tweets, err
+	}
 	for i := -days; i < 0; i++ {
-		re, err := regexp.Compile("[0-9]+")
-		if err != nil {
-			return tweets, err
-		}
 		all := re.FindAllString(tweets[cnt], -1)
 		if len(all) != 3 {
+			cnt++
 			continue
 		}
 		countF, err := strconv.ParseFloat(all[0], 64)
 		if err != nil {
 			return tweets, err
 		}
-		n.Counts[cnt] = countF
+		n.Counts = append(n.Counts, countF)
 		n.labels = append(n.labels, now.AddDate(0, 0, i).Format("01/02"))
 		cnt++
 	}
@@ -93,7 +93,6 @@ func (n *Nyanpass) CreateImage(fileName string) error {
 	p.Title.Text = "Nyanpass Graph"
 	p.X.Label.Text = "Days"
 	p.Y.Label.Text = "Nyanpass count"
-	p.Y.Tick.Marker = &CommaTicks{}
 	p.NominalX(n.labels...)
 
 	if err := p.Save(4*vg.Inch, 4*vg.Inch, fileName); err != nil {
