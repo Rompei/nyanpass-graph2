@@ -24,13 +24,7 @@ type Nyanpass struct {
 }
 
 // NewNyanpass is constructor of Nyanpass
-func NewNyanpass() *Nyanpass {
-	info := twitter.TwitterInfo{
-		ConsumerKey:       os.Getenv("CONSUMER_KEY"),
-		ConsumerSecret:    os.Getenv("CONSUMER_SECRET"),
-		AccessToken:       os.Getenv("ACCESS_TOKEN"),
-		AccessTokenSecret: os.Getenv("ACCESS_TOKEN_SECRET"),
-	}
+func NewNyanpass(info twitter.TwitterInfo) *Nyanpass {
 
 	return &Nyanpass{
 		twitter: twitter.NewTwitter(info),
