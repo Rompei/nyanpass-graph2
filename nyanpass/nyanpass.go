@@ -88,8 +88,9 @@ func (n *Nyanpass) CreateImage(fileName string) error {
 	p.X.Label.Text = "Days"
 	p.Y.Label.Text = "Nyanpass count"
 	p.NominalX(n.labels...)
+	p.Y.Tick.Marker = RelabelTicks{}
 
-	if err := p.Save(4*vg.Inch, 4*vg.Inch, fileName); err != nil {
+	if err := p.Save(6*vg.Inch, 6*vg.Inch, fileName); err != nil {
 		return err
 	}
 	n.imagePath = fileName

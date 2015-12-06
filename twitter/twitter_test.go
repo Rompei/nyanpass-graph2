@@ -1,7 +1,6 @@
 package twitter
 
 import (
-	"encoding/base64"
 	"os"
 	"testing"
 )
@@ -17,6 +16,7 @@ func TestGetTweets(t *testing.T) {
 	}
 }
 
+/*
 func TestPostMediaTweet(t *testing.T) {
 	twitter := NewTwitter(prepareTwitterInfo())
 	image, err := os.Open("lena.png")
@@ -41,6 +41,7 @@ func TestPostMediaTweet(t *testing.T) {
 		t.Errorf("Text was wrong")
 	}
 }
+*/
 
 func prepareTwitterInfo() TwitterInfo {
 	return TwitterInfo{
