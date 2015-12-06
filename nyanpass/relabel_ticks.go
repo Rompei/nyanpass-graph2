@@ -13,7 +13,7 @@ func (RelabelTicks) Ticks(min, max float64) []plot.Tick {
 		if t.Label == "" { // Skip minor ticks, they are fine.
 			continue
 		}
-		tks[i].Label = addCommas(fmt.Sprintf("%.0f", t.Value)) // %g uses scientific notation if it is more compact
+		tks[i].Label = convertShortNumber(t.Value, 0) // %g uses scientific notation if it is more compact
 		// or tks[i].Label = withCommas(t.Value)
 		// or whatever else you want
 	}
@@ -35,4 +35,21 @@ func addCommas(s string) string {
 		s += string(rev[i])
 	}
 	return s
+}
+
+func convertShortNumber(src float64, it int) string {
+	c := []string{"K", "M", "B", "T"}
+	if src < 1000 {
+		return fmt.Sprintf("%.0f", src)
+	}
+	f := float64((int64(src) / 100) / 10.0)
+	isRound := (int64(f)*10)%10 == 0
+	if f < 1000 {
+		if f > 99.9 || isRound || (!isRound && f > 99.9) {
+			return fmt.Sprintf("%d%s", int(f)*10/10, c[it])
+		}
+		return fmt.Sprintf("%.0f%s", f, c[it])
+	}
+	return convertShortNumber(f, it+1)
+
 }
