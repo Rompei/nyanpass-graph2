@@ -76,7 +76,7 @@ func (n *Nyanpass) CreateImage(fileName string) error {
 		return err
 	}
 
-	bar, err := plotter.NewBarChart(n.Counts, vg.Points(20))
+	bar, err := plotter.NewBarChart(n.Counts, vg.Points(30))
 	if err != nil {
 		return err
 	}
